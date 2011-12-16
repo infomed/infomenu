@@ -1,0 +1,230 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  infomenu.module: n/a
+#  infomenu.info: n/a
+#  libs/WSAccess.php: n/a
+#  infomenu.install: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2009-03-30 12:25-0500\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#: infomenu.module:57
+msgid "Administer Infomenu"
+msgstr "Administrar Infomenu"
+
+#: infomenu.module:77
+msgid "<strong>Description:</strong> Allows to view menus in many ways."
+msgstr "<strong>Descripción:</strong> Permite ver los menus en diferentes vistas."
+
+#: infomenu.module:78
+msgid "<strong>Installation:</strong> Copy the module to the folder of modules of your installation of Drupal (..\\sites\\all\\modules\\). Enable it in administer->site building->modules. When module is enabled, it creates administration menu, tables with prefix infomenu_."
+msgstr "<strong>Installación:</strong> Copie el módulo a la carpeta de módulos de su installación de Drupal (..\\sites\\all\\modules\\). Habilítelo en administer->site building->modules. Al habilitar el módulo este crea el menú de administración y tablas con el prefijo infomenu_."
+
+#: infomenu.module:79
+msgid "<strong>Administration Menu:</strong><ul><li>Administer Infomenu (shows module help)<ul><li>Permissions<ul><li>View Infomenu blocks: allows to see infomenu blocks.</li><li>Administer Infomenu: allows the access to the administration menu.</li><li>Administer Infomenu Blocks: allows the access to the Blocks option.</li></ul></li></ul></li></ul>"
+msgstr "<strong>Menú de Administración:</strong><ul><li>Administrar Infomenu (muestra la ayuda)<ul><li>Permisos<ul><li>Ver bloques Infomenu: permite ver los bloques de infomenu.</li><li>Administrar Infomenu: permite el acceso al menú de administración.</li><li>Administrar Bloques Infomenu: permite el acceso a la opción Bloques.</li></ul></li></ul></li></ul>"
+
+#: infomenu.module:80
+msgid "<strong>Tables:</strong> <ul><li>infomenu_block: to save blocks of module</li></ul> <ul><li>infomenu_block_views: to choice a available view of a block</li></ul><ul><li>infomenu_link_image: to save the path on server of the images</li></ul>"
+msgstr "<strong>Tablas:</strong> <ul><li>infomenu_block: para guardar los bloques del módulo</li></ul><ul><li>infomenu_block_views: Para escoger una vista disponible de un bloque</li></ul><ul><li>infomenu_link_image: para guardar la ruta en el servidor de las imágenes</li></ul>"
+
+#: infomenu.module:81
+msgid "<strong>Visualization:</strong> Like any other block of Drupal, an Infomenu block should be placed in any region for display, this can be done in: administer->site building->blocks."
+msgstr "<strong>Visualización:</strong> <ul><li>Como cualquier otro bloque de Drupal, un bloque de infomenu debe ser ubicado en alguna región para mostrarse, esto se puede hacer mediante: administer->site building->blocks."
+
+#: infomenu.module:82
+msgid "<strong>Disable:</strong> Disable in: administer->modules. After would stop to be shown: <ul><li>The Administer Infomenu Menu</li></ul> <ul><li>The blocks that had been located in any region</li></ul> But they stay the tables created by the module with all its data."
+msgstr "<strong>Deshabilitar:</strong> Deshabilitar en: administer->modules. Después de lo cual no se mostrarán: <ul><li>El Menú Administrar Infomenu</li></ul> <ul><li>Los bloques que fueron ubicados en cualquier región</li></ul> Pero se mantienen las tablas creadas por el módulo y todos sus datos."
+
+#: infomenu.module:83
+msgid "<strong>Uninstall:</strong> Uninstall in: administer->modules->uninstall. After would eliminate the tables created by the module and in the table blocks (Drupal) deletes records whose form is Infomenu."
+msgstr "<strong>Desinstalar:</strong> Desinstalar en: administer->modules->uninstall. Después de lo cual se eliminan las tablas creadas por el módulo y los registros en la tabla bloques de Drupal cuyo módulo es Infomenu."
+
+#: infomenu.module:87
+msgid "Allows to view menus in many ways."
+msgstr "Permite ver los menus en diferentes vistas."
+
+#: infomenu.module:107
+msgid "Administer Infomenu"
+msgstr "Administrar infomenu"
+
+#: infomenu.module:114
+msgid "Permissions"
+msgstr "Permisos"
+
+#: infomenu.module:123
+msgid "Blocks"
+msgstr "Bloques"
+
+#: infomenu.module:131
+msgid "List"
+msgstr "Listar"
+
+#: infomenu.module:140
+msgid "Add block"
+msgstr "Agregar bloque"
+
+#: infomenu.module:151
+msgid "Edit block"
+msgstr "Editar bloque"
+
+#: infomenu.module:161
+msgid "Delete block"
+msgstr "Eliminar bloque"
+
+#: infomenu.module:227
+msgid "Delete picture"
+msgstr "Eliminar imagen"
+
+#: infomenu.module:236
+msgid "Image"
+msgstr "Imagen"
+
+#: infomenu.module:246
+msgid "Image to upload:"
+msgstr "Imagen a subir"
+
+#: infomenu.module:249 infomenuOld.module:251
+msgid "Allowed Filetypes: gif, png, jpg"
+msgstr "Tipos de fichero permitidos: gif, png, jpg"
+
+#: infomenu.module:284
+msgid "The path is not valid."
+msgstr "El camino no es válido."
+
+#: infomenu.module:307
+msgid "Infomenu Error: There was an error saving the menu link."
+msgstr "Infomenu Error: Hubo un error salvando el elemento."
+
+#: infomenu.module:341
+msgid "Infomenu Error: There was not saved any image."
+msgstr "Infomenu Error: No se ha guardado ninguna imagen."
+
+#: infomenu.module:425
+msgid "Content"
+msgstr "Contenido"
+
+#: infomenu.module:404
+msgid "Deleted (by menu option) '%module' block: '%title'."
+msgstr "Eliminado (por administración del menu) '%module' block: '%title'."
+
+#: infomenu.admin.inc:30
+msgid "Title"
+msgstr "Título"
+
+#: infomenu.admin.inc:30;111
+msgid "Menu"
+msgstr "Menu"
+
+#: infomenu.admin.inc:30;136
+msgid "Region"
+msgstr "Región"
+
+#: infomenu.admin.inc:30
+msgid "Operations"
+msgstr "Operaciones"
+
+#: infomenu.admin.inc:35
+msgid "edit"
+msgstr "editar"
+
+#: infomenu.admin.inc:36
+msgid "delete"
+msgstr "eliminar"
+
+#: infomenu.admin.inc:39
+msgid "configure"
+msgstr "configurar"
+
+#: infomenu.admin.inc:100
+msgid "Name"
+msgstr "Nombre"
+
+#: infomenu.admin.inc:103
+msgid "Enter the name of the block"
+msgstr "Introduzca el título del bloque"
+
+#: infomenu.admin.inc:117
+msgid "Type"
+msgstr "Tipo"
+
+#: infomenu.admin.inc:123
+msgid "none"
+msgstr "ninguno"
+
+#: infomenu.admin.inc:137
+msgid "Assign a block to a region."
+msgstr "Asigne el bloque a una región."
+
+#: infomenu.admin.inc:145
+msgid "Submit"
+msgstr "Salvar"
+
+#: infomenu.admin.inc:158
+msgid "The menu is not valid."
+msgstr "El menu no es válido"
+
+#: infomenu.admin.inc:168
+msgid "The view is not valid."
+msgstr "La vista no es válida."
+
+#: infomenu.admin.inc:172
+msgid "Can not update."
+msgstr "NO se puede actualizar."
+
+#: infomenu.admin.inc:217
+msgid "Are you sure you want to delete %text?"
+msgstr "¿Está seguro de que quiere eliminar %text?"
+
+#: infomenu.admin.inc:219
+msgid "This action cannot be undone."
+msgstr "Esta acción no se puede deshacer."
+
+#: infomenu.admin.inc:220
+msgid "Delete"
+msgstr "Eliminar"
+
+#: infomenu.admin.inc:221
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: infomenu.admin.inc:245
+msgid "The block has been deleted."
+msgstr "El bloque ha sido eliminado."
+
+#: infomenu.admin.inc:190;198;232 infomenu.module:404
+msgid "block"
+msgstr "bloque"
+
+#: infomenu.admin.inc:190
+msgid "Updated '%module' block: '%title'."
+msgstr "Actualizado '%module' bloque: '%title'."
+
+#: infomenu.admin.inc:198
+msgid "Added '%module' block: '%title'."
+msgstr "Adicionado '%module' bloque: '%title'."
+
+#: infomenu.admin.inc:232
+msgid "Deleted '%module' block: '%title'."
+msgstr "Eliminado '%module' block: '%title'."
+
+#: infomenu.info:0
+msgid "infomenu"
+msgstr ""
+
+#: infomenu.info:0
+msgid "Display menus based on different views"
+msgstr "Permite ver los menus en diferentes vistas."

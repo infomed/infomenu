@@ -1,0 +1,64 @@
+.collection {
+padding-top: 5px;
+
+}
+.collection_inner {
+padding-top: 5px;
+}
+.description
+{
+	font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+	line-height:12px;
+}
+
+.first_level {
+font-size : 10;
+line-height : 14pt;
+border-bottom:solid #ff0000; 
+border-bottom-width:1px;
+border-bottom-color:#ff8800; 
+font-weight: bold;
+}
+
+.first_level  div a{
+color: #667389;
+vertical-align: middle;
+}
+.first_level  div img{
+vertical-align: middle;
+margin-right: 4px;
+}
+
+.second_level {
+font-size : 7;
+line-height : 11pt;
+font-weight: bold;
+margin-left: 8px;
+}
+
+.second_level  div a{
+color: #555555;
+vertical-align: middle;
+}
+.second_level  div img{
+vertical-align: middle;
+margin-right: 4px;
+}
+
+.second_level  a{
+color: #555555 !important;
+vertical-align: middle;
+}
+
+.spanmenu {
+font-size : 10px !important;
+line-height : 8pt;
+margin-left: 8px;
+padding-top:5px;
+}
+.spanmenu  span a{
+color: #555555;
+}
+

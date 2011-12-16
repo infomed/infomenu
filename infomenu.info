@@ -1,0 +1,7 @@
+name = infomenu
+package = "Infomed"
+description = Display menus based on different views
+dependencies[] = menu
+dependencies[] = infoutilities
+core = 6.x
+version = "6.x-1.3"

@@ -1,0 +1,84 @@
+<?php
+// $Id$
+/**
+ * @file
+ * Implements hooks install, uninstall, schema, update.
+ *
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function infomenu_install() {
+  // Create tables.
+  drupal_install_schema('infomenu');
+
+  db_query("INSERT INTO {infomenu_block_views} (type, name) VALUES ('%s', '%s')",'bvs', 'Estilo la bvs');
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function infomenu_schema() {
+  $schema['infomenu_block'] = array(
+    'fields' => array(
+      'imid'    => array('type' => 'serial', 'length' => 10, 'unsigned' => TRUE, 'not null' => TRUE),
+      'text'    => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE),
+      'type' => array('type' => 'varchar', 'length' => 20, 'not null' => TRUE),
+      'menu_name'    => array('type' => 'varchar', 'length' => 100, 'not null' => TRUE),
+      'visible' => array('type' => 'varchar', 'length' => 2, 'not null' => TRUE),
+    ),
+    'primary key' => array('imid'),
+  );
+
+  $schema['infomenu_block_views'] = array(
+    'fields' => array(
+      'type'    => array('type' => 'varchar', 'length' => 20, 'not null' => TRUE),
+      'name'    => array('type' => 'varchar', 'length' => 100, 'not null' => TRUE),
+    ),
+    'primary key' => array('type'),
+  );
+  $schema['infomenu_link_image'] = array(
+    'fields' => array(
+    	'mlid'    => array('type' => 'int', 'length' => 10, 'unsigned' => TRUE, 'not null' => TRUE),
+    	'image_path'    => array('type' => 'varchar', 'length' => 100,),
+    	'menu_name'=> array('type' => 'varchar', 'length' => 32,),
+    ),
+    'primary key' => array('mlid'),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function infomenu_uninstall() {
+  //Delete infomenu module's blocks
+  db_query("DELETE FROM {blocks} WHERE module = 'infomenu'");
+  db_query("DELETE FROM {blocks_roles} WHERE module = 'infomenu'");
+
+  //Delete infomenu permissions
+  infoutilities_perm_delete('infomenu');
+
+  // Remove tables.
+  drupal_uninstall_schema('infomenu');
+}
+
+function infomenu_update_6001() {
+	db_query("DROP TABLE {infomenu_link_image}");
+
+  $schema['infomenu_aditional_info'] = array(
+     'fields' => array(
+    	'mlid'    => array('type' => 'int', 'length' => 10, 'unsigned' => TRUE, 'not null' => TRUE),
+    	'image_path'    => array('type' => 'varchar', 'length' => 150,),
+    	'abstract'=> array('type' => 'text'),
+    ),
+    'primary key' => array('mlid'),
+  );
+
+  $ret = array();
+  db_create_table($ret, 'infomenu_aditional_info', $schema['infomenu_aditional_info']);
+  return $ret;
+}
+

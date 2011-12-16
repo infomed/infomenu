@@ -1,0 +1,507 @@
+<?php
+// $Id$
+/**
+* @file
+* Allows to view menus in many ways.
+*/
+
+/**
+ * Implementation of hook_perm().
+ */
+function infomenu_perm() {
+  return array('view infomenu blocks','administer infomenu blocks');
+}
+/**
+ * Implementation of hook_perm().
+ */
+function infomenu_init() {
+	 //init_theme();
+	 drupal_add_css(drupal_get_path('module', 'infomenu') . '/css/global.css');
+}
+
+
+/**
+ * Implementation of hook_theme().
+ */
+function infomenu_theme() {
+  return array(
+    'infomenu_preview_picture' => array(
+      'arguments' => array('image' => NULL),
+      'template' => 'infomenu-preview-picture',
+    ),
+
+    'infomenu_content' => array(
+      'arguments' => array('content' => NULL),
+      'template' => 'infomenu-content',
+    ),
+
+    'infomenu_content_dinamic' => array(
+      'arguments' => array('content' => NULL),
+      'template' => 'infomenu-content-dinamic',
+    ),
+
+    'infomenu_sub_content' => array(
+      'arguments' => array('content' => NULL),
+      'template' => 'infomenu-sub-content',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_help().
+ *
+ * Display help and module information
+ *
+ * @param $path
+ *   which path of the site we're displaying help
+ * @param $arg
+ *   array that holds the current path as would be returned from arg() function
+ * @return
+ *    help text for the path
+ */
+function infomenu_help($path, $arg) {
+  $output = '';
+  switch ($path) {
+    case "admin/help#infomenu":
+    case "admin/infomenu/help":
+      $output.= '<p>'.t('<strong>Description:</strong> Allows to view menus in many ways.').'</p>';
+      $output.= '<p>'.t('<strong>Installation:</strong> Copy the module to the folder of modules of your installation of Drupal (..\sites\all\modules\). Enable it in administer->site building->modules. When module is enabled, it creates administration menu, tables with prefix infomenu_.').'</p>';
+      $output .= '<p>'.t("<strong>Administration Menu:</strong><ul><li>Administer Infomenu (shows module help)<ul><li>Permissions<ul><li>View Infomenu blocks: allows to see infomenu blocks.</li><li>Administer Infomenu: allows the access to the administration menu.</li><li>Administer Infomenu Blocks: allows the access to the Blocks option.</li></ul></li></ul></li></ul>").'</p>';
+      $output .= '<p>'.t('<strong>Tables:</strong> <ul><li>infomenu_block: to save blocks of module</li></ul> <ul><li>infomenu_block_views: to choice a available view of a block</li></ul><ul><li>infomenu_link_image: to save the path on server of the images</li></ul>').'</p>';
+      $output .= '<p>'.t('<strong>Visualization:</strong> Like any other block of Drupal, an Infomenu block should be placed in any region for display, this can be done in: administer->site building->blocks.').'</p>';
+      $output .= '<p>'.t('<strong>Disable:</strong> Disable in: administer->modules. After would stop to be shown: <ul><li>The Administer Infomenu Menu</li></ul> <ul><li>The blocks that had been located in any region</li></ul> But they stay the tables created by the module with all its data.').'</p>';
+      $output .= '<p>'.t('<strong>Uninstall:</strong> Uninstall in: administer->modules->uninstall. After would eliminate the tables created by the module and in the table blocks (Drupal) deletes records whose form is Infomenu.').'</p>';
+      break;
+
+	case 'admin/modules#description':
+      $output = t("Allows to view menus in many ways.");
+      break;
+  }
+  return $output;
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function infomenu_menu() {
+  $items = array();
+
+  $items['infomenu'] = array(
+    'title' => '',
+    'page callback' => 'infomenu_display',
+    'access arguments' => array('view infomenu blocks'),
+    'type' => MENU_CALLBACK,
+    'file' => 'infomenu.admin.inc',
+  );
+  $items['admin/infomenu'] = array(
+    'title' => t('Administer Infomenu'),
+    'page callback' => 'infomenu',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer infomenu blocks'),
+    'file' => 'infomenu.admin.inc',
+  );
+  $items['admin/infomenu/permissions'] = array(
+    'title' => t('Permissions'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('infoutilities_perm_form', 1),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer permissions'),
+    'weight' => -2,
+  );
+
+  $items['admin/infomenu/block'] = array(
+    'title' => t('Blocks'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer infomenu blocks'),
+    'page callback' => 'infomenu_admin',
+    'file' => 'infomenu.admin.inc',
+    'weight' => -1,
+  );
+
+  $items['admin/infomenu/block/view'] = array(
+    'title' => t('List'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer infomenu blocks'),
+    'page callback' => 'infomenu_admin',
+    'weight' => -1,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'file' => 'infomenu.admin.inc',
+  );
+  $items['admin/infomenu/block/add'] = array(
+    'title' => t('Add block'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer infomenu blocks'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('infomenu_block_form'),
+    'weight' => 0,
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'infomenu.admin.inc',
+  );
+
+  $items['admin/infomenu/block/edit/%'] = array(
+    'title' => t('Edit block'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('infomenu_block_form',4),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer infomenu blocks'),
+    'type' => MENU_CALLBACK,
+    'file' => 'infomenu.admin.inc',
+  );
+
+  $items['admin/infomenu/block/delete/%'] = array(
+    'title' => 'Delete block',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array(infomenu_confirm_delete_form, 4),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer infomenu blocks'),
+    'type' => MENU_CALLBACK,
+    'file' => 'infomenu.admin.inc',
+  );
+  $items['admin/infomenu/help'] = array(
+    'title' => 'Help',
+    'page callback' => 'infomenu_emptypage',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer infomenu'),
+    'weight' => 0,
+  );
+
+  return $items;
+}
+
+/**
+ * Declare a block or set of blocks
+ *
+ * @param $op
+ *   wich information retrieve (list, configure, save, view)
+ * @param $delta
+ *   wich block to return
+ * @param $edit
+ *   if $op is save, the submitted form data from the configuration form
+ * @return if $op is 'list' An array of block descripton,
+ *         if $op is 'configure' return the configuration form  NO
+ *         if $op is 'save' return nothing     NO
+ *         if $op is 'view' return an array with subject and content of block indexed by $delta
+ */
+function infomenu_block($op = 'list', $delta = 0, $edit = array()){
+  if (user_access('view infomenu blocks')){
+    switch ($op) {
+  	  case 'list':
+        $result = db_query("SELECT imid, text, menu_name, visible FROM {infomenu_block}");
+        $blocks = array();
+        while ($block = db_fetch_object($result)) {
+          if($block->visible == 'ok'){
+            $blocks["infomenu-$block->imid"]['info'] = $block->text.' bvs';
+		  }
+        }
+        return $blocks;
+
+      case 'view':
+        include_once('infomenu.admin.inc');
+        list(, $id) = explode('-', $delta);
+        $block = infomenu_render_block($id);
+    }
+    return $block;
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Alter menu_edit_item form to add an image, and path is not required
+ */
+function infomenu_form_alter(&$form, $form_state, $form_id){
+  global $base_path;
+
+  if ($form_id == 'menu_edit_item') {
+	$form['menu']['link_path']['#required'] = 0;
+	$form['menu']['link_path']['#maxlength'] = 250;
+
+
+    $path_image = '';
+    $abstract_text = '';
+    //checking if it was assigned an image to the menu item
+    if ($form['menu']['#item']){
+
+   	   if($item_info = db_fetch_array(db_query("SELECT mp.* FROM {infomenu_aditional_info} mp WHERE mp.mlid = %d", $form['menu']['#item']['mlid']))) {
+   		$path_image = $item_info['image_path'];
+   		$abstract_text = $item_info['abstract'];
+   	  }
+
+    }
+
+	if ($path_image != ''){
+	  $form['menu']['picture_delete'] = array(
+		'#type' => 'checkbox',
+		'#title' => t('Delete picture'),
+		'#description' => t('Check this box to delete your current picture.')
+	  );
+
+	  $image = $base_path.$path_image;
+
+	  $picture = theme('infomenu_preview_picture',$image);
+	  $form['menu']['check_image'] = array(
+	 	'#type' => '',
+ 	 	'#title' => t('Image'),
+  		'#value' => $picture,
+	  );
+    }
+
+    $form['#attributes'] = array(
+      'enctype' => 'multipart/form-data',
+    );
+
+    $form['menu']['file'] = array(
+      '#title' => t('Image to upload:'),
+      '#type' => 'file',
+      '#description' => t('Allowed Filetypes: gif, png, jpg')
+    );
+
+
+    $form['menu']['abstract'] = array(
+        '#title' => t('Abstract'),
+	 	 '#type' => 'textarea',
+	 	 '#rows' => 1,
+	 	 '#value' => $abstract_text,
+
+       '#description' => t('This text will only show up on infomenu items')
+
+	  );
+
+	//Add a validate and submit function
+	$form['#submit'][0] = 'infomenu_myfunction_submit';
+   	$form['#validate'][] = 'infomenu_myfunction_validate';
+   	$form['#validate'] = array_reverse($form['#validate']);
+
+  }
+
+  if ($form_id == 'menu_item_delete_form') {
+  	//Adding a delete item menu function
+    $form['#submit'][] = 'infomenu_delete_aditionalinfo_submit';
+
+    }
+
+
+
+  if ($form_id == 'menu_delete_menu_confirm') {
+  	//Adding a delete item menu function
+    $form['#submit'][] = 'infomenu_delete_menu_items';
+    $form['#submit'] = array_reverse( $form['#submit']);
+
+  }
+}
+
+/**
+ * Validate link_path value.
+ */
+function infomenu_myfunction_validate($form, &$form_state) {
+
+  if ($form_state['values']['menu']['link_path'] == '') {
+    $form_state['values']['menu']['link_path'] = 'infomenu';
+  }
+
+  if ($form_state['values']['menu']['menu_image_path'] != '') {
+    if (!file_exists($form_state['values']['menu']['menu_image_path'])) {
+ 	  form_set_error($form_state['values']['menu']['menu_image_path'], t('The path is not valid.'));
+    }
+  }
+}
+
+/**
+  * New submit function to add menu items with an opcional image.
+  * The link_path field is not required now.
+  */
+function infomenu_myfunction_submit($form, &$form_state) {
+
+
+  $item = $form_state['values']['menu'];
+
+
+  $item['hidden'] = (int) !$item['enabled'];
+  unset($item['enabled']);
+
+  $item['options']['attributes']['title'] = $item['description'];
+  list($item['menu_name'], $item['plid']) = explode(':', $item['parent']);
+
+  $form_state['redirect'] = 'admin/build/menu-customize/'. $item['menu_name'];
+
+  if (!($identificator = menu_link_save($item))) {
+    drupal_set_message(t('Infomenu Error: There was an error saving the menu link.'), 'error');
+    return;
+  }
+
+  $validators=array();
+  global $user;
+
+  $validators = array(
+    'file_validate_is_image' => array(),
+    'file_validate_image_resolution' => array('1024x1024','10x10'),
+    'file_validate_size' => array(1024 * 1024),
+  );
+
+  if ($form_state['values']['menu']['link_path'] == 'infomenu'){
+	db_query("UPDATE {menu_links} SET link_path = '%s' WHERE mlid = '%d'", 'infomenu/'.$identificator, $identificator);
+  }
+
+  //if there is an image then will be deleted
+  if ($form_state['values']['menu']['picture_delete'] == 1) {
+	if ($form_state['values']['menu']['mlid']) infomenu_delete_picture($form_state['values']['menu']['mlid']);
+  }
+
+
+ $path_image_final = '';
+	if($file = file_save_upload('menu', $validators,file_directory_path()))
+       	{
+           $path_image_final = $file->destination;
+       	}
+
+ $abstract = $_POST['menu']['abstract'];
+
+  if ($identificator) {
+
+       	if ($query = db_fetch_array(db_query("SELECT mp.* FROM {infomenu_aditional_info} mp WHERE mp.mlid = %d", $identificator))) {
+
+        if($file )
+        {
+                    if(!$form_state['values']['menu']['picture_delete'])
+                       		file_delete($query['image_path']);
+        }
+       	else
+       	{       		$path_image_final = $query['image_path'];       	}
+
+		if($path_image_final || $abstract) {
+       	db_query("UPDATE {infomenu_aditional_info} SET image_path = '%s', abstract='%s' WHERE mlid = '%d'", $path_image_final,$abstract, $identificator);
+
+       	}
+       	else
+       	{           db_query("DELETE FROM {infomenu_aditional_info} WHERE mlid = %d", $identificator);       	}
+
+  	}
+  	else if($path_image_final || $abstract) {
+
+ 	 db_query("INSERT INTO {infomenu_aditional_info} (mlid,image_path,abstract) VALUES ('%d','%s','%s')",$identificator, $path_image_final,$abstract);
+ 	 }
+  	}
+
+
+  return;
+}
+
+
+  /*
+  * Submit function to delete the image.
+  */
+function infomenu_delete_aditionalinfo_submit($form, &$form_state) {
+
+  if ($form['#item']['mlid']) {
+  infomenu_delete_aditionalinfo_item($form['#item']['mlid']);
+	//
+  }
+}
+
+
+/*
+ * Function to delete the image.
+ * @
+ */
+function infomenu_delete_picture($mlid) {
+  //if the id is numeric then the image will be deleted
+  if (is_numeric($mlid)) {
+	$result = db_query("SELECT * FROM {infomenu_aditional_info} WHERE mlid = %d", $mlid);
+    while ($item = db_fetch_array($result)) {
+   	  file_delete($item['image_path']);
+   	  db_query("UPDATE {infomenu_aditional_info} SET image_path = '' WHERE mlid = '%d'",  $mlid);
+    }
+  }
+}
+
+/*
+ * Function to delete the image.
+ * @
+ */
+function infomenu_delete_aditionalinfo_item($mlid) {
+  //if the id is numeric then the image will be deleted
+  if (is_numeric($mlid)) {
+	$result = db_query("SELECT * FROM {infomenu_aditional_info} WHERE mlid = %d", $mlid);
+    while ($item = db_fetch_array($result)) {
+   	  file_delete($item['image_path']);
+   	   db_query("DELETE FROM {infomenu_aditional_info} WHERE mlid = %d", $mlid);
+    }
+  }
+}
+
+/*
+ * Function to delete a menu item.
+ * @
+ */
+function infomenu_delete_menu_items($form, &$form_state) {
+
+  if ($form['#menu']['menu_name']) {
+    $result = db_query("SELECT mli.* FROM {menu_links} ml INNER JOIN {infomenu_aditional_info} mli ON ml.mlid = mli.mlid WHERE ml.menu_name = '%s'", $form['#menu']['menu_name']);
+    while ($item = db_fetch_array($result)) {
+
+ 	  file_delete($item['image_path']);
+    }
+
+    db_query("DELETE mli FROM {menu_links} ml INNER JOIN {infomenu_aditional_info} mli ON ml.mlid = mli.mlid WHERE ml.menu_name = '%s'", $form['#menu']['menu_name']);
+    infomenu_delete_block_by_menu($form['#menu']['menu_name']);
+  }
+}
+
+/*
+ * Function to delete a block by the associated menu.
+ * @
+ */
+function infomenu_delete_block_by_menu($menu_name) {
+
+  $result = db_query("SELECT * FROM {infomenu_block} WHERE menu_name='%s'", $menu_name);
+
+  while ($item = db_fetch_array($result)) {
+	db_query("DELETE FROM {infomenu_block} WHERE imid=%d", $item['imid']);
+	db_query("DELETE FROM {blocks} WHERE module = 'infomenu' AND delta = 'infomenu-%d'", $item['imid']);
+    //guardar en log de drupal
+    watchdog('block', "Deleted (by menu option) '%module' block: '%title'.", array('%module' => 'Infomenu', '%title' => $item['text']));
+  }
+
+  cache_clear_all();
+}
+
+/**
+ * Render menu for _block() hook
+ *
+ * @param $id
+ *   id of infomenu block to render
+ * @return
+ *   associative array (of block's title and content)
+ */
+function infomenu_render_block($id) {
+
+  $item = infomenu_load_block($id);
+
+  $struct = infomenu_structure(menu_tree_all_data($item['menu_name']));
+  switch($item['type']) {
+    case 'bvs':
+     $out = theme('infomenu_content',$struct);
+     break;
+    case 'bvs_dinamic':
+      $out = theme('infomenu_content_dinamic',$struct);
+      $path_to_module = drupal_get_path('module', 'infomenu');
+      drupal_add_js($path_to_module.'/funciones.js');
+      break;
+  }
+
+  $block = array(
+    'subject' => $item['text'],
+    'content' => $out ? $out : t('Content')
+  );
+
+  return $block;
+
+}
+
+/**
+ * Aux function to show Help of infomenu
+ */
+function infomenu_emptypage() {
+  return '';
+}
+
